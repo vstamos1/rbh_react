@@ -9,13 +9,14 @@ const StyledHamb = styled.div`
   transform: rotate(0deg);
   transition: 0.5s ease-in-out;
   cursor: pointer;
+  
 
   & span {
     display: block;
     position: absolute;
     height: 4.5px;
     width: 100%;
-    background: var(--color-white);
+    background: #f8e48c;
     border-radius: 9px;
     opacity: 1;
     left: 0;

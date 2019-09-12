@@ -6,8 +6,8 @@ const StyledButton = styled.button`
   outline: none;
   padding: 1.2rem 5rem;
   border-radius: 2rem;
-  font-size: 1.2rem;
-  color: var(--color-white);
+  font-size: 1.4rem;
+  color: white;
   font-weight: 700;
   box-shadow: 0rem 0.5rem 3.5rem var(--shadow);
   background-color: ${({ color }) => {
@@ -15,7 +15,8 @@ const StyledButton = styled.button`
     else if (color === 'main') return 'var(--color-mainDark)';
     else return 'var(--color-mainLighter)';
   }};
-  margin: 1.5rem 0 2rem 0;
+  margin: 0;
+  margin-bottom: 2rem;
   border: none;
   transition: all 0.2s;
 

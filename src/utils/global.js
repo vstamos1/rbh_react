@@ -27,6 +27,8 @@ export default createGlobalStyle`
     --color-text: ${props => props.theme.colors.textColor};
     --color-white: ${props => props.theme.colors.whiteColor};
     --color-errorRed: ${props => props.theme.colors.errorRed};
+    --color-limeGreen: ${props => props.theme.colors.limeGreen};
+    --color-mainYellow: ${props => props.theme.colors.mainYellow};
     --shadow: ${props => props.theme.colors.shadow};
 
     @media ${props => props.theme.mediaQueries.small} {

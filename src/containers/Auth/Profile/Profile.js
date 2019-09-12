@@ -12,7 +12,8 @@ import Button from '../../../components/UI/Forms/Button/Button';
 import Modal from '../../../components/UI/Modal/Modal';
 
 import * as actions from '../../../store/actions';
-
+import * as fb from 'firebase'
+let storageRef = fb.storage().ref();
 const MessageWrapper = styled.div`
   position: absolute;
   bottom: 2rem;
@@ -28,13 +29,35 @@ const AccountWrapper = styled.div`
   min-height: calc(100vh - 6rem);
   background-color: var(--color-mainLighter);
   `
+  const Image = styled.img`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: block;
+  position: relative;
+  margin: auto;
+
+  @media only screen and (min-width: 37.5em){
+    transform: rotate(90deg);
+  }
+
+  @media ${props => props.theme.mediaQueries.small} {
+    
+  }
+
+  `
+
+  const EditImageBtn = styled.button`
+    margin: 1rem;
+    background: var(--color-white)
+  `
 
 const DeleteWrapper = styled.div`
   cursor: pointer;
   color: var(--color-errorRed);
   font-size: 1.3rem;
   font-weight: 700;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
   transition: all 0.2s;
 
   &:hover {
@@ -49,8 +72,9 @@ const DeleteWrapper = styled.div`
 const ButtonsWrapper = styled.div`
   display: flex;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-top: 2rem;
   justify-content: space-around;
+  
 `;
 
 const ProfileSchema = Yup.object().shape({
@@ -62,6 +86,7 @@ const ProfileSchema = Yup.object().shape({
     .required('Your last name is required.')
     .min(3, 'Too short.')
     .max(25, 'Too long.'),
+  aptNum: Yup.string().max(3),
   password: Yup.string().min(8, 'The password is too short.'),
   confirmPassword: Yup.string().when('password', {
     is: password => password.length > 0,
@@ -87,11 +112,70 @@ const Profile = ({
     };
   }, [cleanUp]);
 
+  const handleImageChange = (event) => {
+    event.preventDefault();
+    const image = event.target.files[0];
+    let formData = new FormData();
+    formData.append('image', image, image.name);
+    uploadTask(image);
+  };
+  const handleEditPicture = () => {
+    const fileInput = document.getElementById('imageInput');
+    fileInput.click();
+  };
   const [modalOpened, setModalOpened] = useState(false);
+  
+ 
+
+// Register three observers:
+// 1. 'state_changed' observer, called any time the state changes
+// 2. Error observer, called on failure
+// 3. Completion observer, called on successful completion
+function uploadTask(file) { 
+  console.log(file)
+  let fileUpload = storageRef.child('userImages').child(firebase.auth.uid).put(file);
+    fileUpload.on('state_changed', function(snapshot){
+      // Observe state change events such as progress, pause, and resume
+      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+      console.log('Upload is ' + progress + '% done');
+      switch (snapshot.state) {
+        case fb.storage.TaskState.PAUSED: // or 'paused'
+          console.log('Upload is paused');
+          break;
+        case fb.storage.TaskState.RUNNING: // or 'running'
+          console.log('Upload is running');
+          break;          
+          default:
+            break;
+      }
+    }, function(error) {
+      // Handle unsuccessful uploads
+    }, function() {
+
+      // Handle successful uploads on complete
+      // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+      fileUpload.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+      
+        console.log('File available at', downloadURL);
+        fb.firestore().collection('users/').doc(firebase.auth.uid).update({
+          
+          imgUrl: downloadURL
+      });
+    })
+
+  })
+}
+
+   
+  // Handle successful uploads on complete
+  // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+  
 
   if (!firebase.profile.isLoaded) return null;
   return (
     <AccountWrapper>
+     
       <Formik
         initialValues={{
           firstName: firebase.profile.firstName,
@@ -99,6 +183,8 @@ const Profile = ({
           email: firebase.auth.email,
           password: '',
           confirmPassword: '',
+          imgUrl: firebase.profile.imgUrl,
+          aptNum: firebase.profile.aptNum
         }}
         validationSchema={ProfileSchema}
         onSubmit={async (values, { setSubmitting }) => {
@@ -122,6 +208,20 @@ const Profile = ({
             <Heading bold size="h4" color="white">
               Here you can edit your profile
             </Heading>
+            <Image src={firebase.profile.imgUrl} alt="profile" className="profile-image" />
+              <input
+                type="file"
+                id="imageInput"
+                hidden="hidden"
+                onChange={handleImageChange}
+              />
+              <EditImageBtn
+                type="button"
+                onClick={handleEditPicture}
+                className="button"
+              >
+                <p>Change</p>
+              </EditImageBtn>
             <StyledForm>
               <Field
                 type="text"
@@ -133,6 +233,13 @@ const Profile = ({
                 type="text"
                 name="lastName"
                 placeholder="Your last name..."
+                component={Input}
+              />
+
+            <Field
+                type="text"
+                name="aptNum"
+                placeholder="Apt number - ex:V2"
                 component={Input}
               />
               {/* <Field

@@ -120,6 +120,8 @@ export const editProfile = data => async (
       .set({
         firstName: data.firstName,
         lastName: data.lastName,
+        imgUrl: data.imgUrl,
+        aptNum: data.aptNum
       });
 
     if (data.password.length > 0) {

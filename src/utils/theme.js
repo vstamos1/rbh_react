@@ -7,6 +7,8 @@ const theme = {
     textColor: '#333',
     whiteColor: '#fff',
     errorRed: '#ff5757',
+    limeGreen: '#5bbc36',
+    mainYellow: '#f8e48c',
     shadow: 'rgba(0,0,0,.2)',
   },
 

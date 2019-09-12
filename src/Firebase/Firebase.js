@@ -4,15 +4,16 @@ import 'firebase/auth';
 
 const config = {
   apiKey: process.env.REACT_APP_SECRET,
-  authDomain: "weedeater-8fec2.firebaseapp.com",
-  databaseURL: "https://weedeater-8fec2.firebaseio.com",
-  projectId: "weedeater-8fec2",
-  storageBucket: "weedeater-8fec2.appspot.com",
-  messagingSenderId: "465363191425",
-  appId: "1:465363191425:web:4c50743fde0f6e6b"
+  authDomain: "rbhcom-39b82.firebaseapp.com",
+  databaseURL: "https://rbhcom-39b82.firebaseio.com",
+  projectId: "rbhcom-39b82",
+  storageBucket: "rbhcom-39b82.appspot.com",
+  messagingSenderId: "342678852923",
+  appId: "1:342678852923:web:5b03d380780e0049"
 };
 
 firebase.initializeApp(config);
 firebase.firestore();
+
 
 export default firebase;

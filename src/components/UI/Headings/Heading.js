@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 const baseStyle = css`
   color: ${({ color }) =>
-    color === 'white' ? 'var(--color-white)' : 'var(--color-main)'};
+    color === 'yellow' ? 'var(--color-mainYellow)' : 'var(--color-white)'};
   font-weight: ${({ bold }) => (bold ? '700' : '300')};
   margin-top: 0;
   letter-spacing: 1px;

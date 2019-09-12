@@ -6,10 +6,10 @@ import { firestoreConnect } from 'react-redux-firebase';
 
 import Heading from '../../components/UI/Headings/Heading';
 import { Container } from '../../hoc/layout/elements';
-import InputTodo from './InputTodo/InputTodo';
+//import InputTodo from './InputTodo/InputTodo';
 import Button from '../../components/UI/Forms/Button/Button';
 import Loader from '../../components/UI/Loader/Loader';
-import Todo from './Todo/Todo';
+import Job from '../../Jobs/Job/Job';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -17,6 +17,7 @@ const Wrapper = styled.div`
   height: 100%;
   min-height: calc(100vh - 6rem);
   background-color: var(--color-mainLighter);
+  color: var(--color-mainYellow)
 `;
 
 const InnerWrapper = styled.div`
@@ -33,29 +34,32 @@ const Content = styled.div`
   max-width: 60rem;
   flex-direction: column;
   margin-top: 2rem;
+  color: var(--color-mainLighter);
 `;
 
-const Todos = ({ todos, requested, userId }) => {
-  const [isAdding, setIsAdding] = useState(false);
+const MyJobs = ({ jobs, requested, userId }) => {
+  const [ setIsAdding] = useState(false);
   let content;
-  if (!todos) {
+  if (!jobs) {
     content = (
       <Content>
         <Loader isWhite />
       </Content>
     );
-  } else if (!todos[userId] || !todos[userId].todos) {
+  } else if (!jobs[userId] || !jobs[userId].jobs) {
     content = (
+        
       <Content>
-        <Heading color="white" size="h2">
+      {console.log("userId : " + userId)}
+        <Heading  size="h2">
           You have no todos!
         </Heading>
       </Content>
     );
-  } else if (todos[userId].todos.length === 0) {
+  } else if (jobs[userId].jobs.length === 0) {
     content = (
       <Content>
-        <Heading color="white" size="h2">
+        <Heading  size="h2">
           You have no todos!
         </Heading>
       </Content>
@@ -63,12 +67,12 @@ const Todos = ({ todos, requested, userId }) => {
   } else {
     content = (
       <Content>
-      {console.log(todos)}
-        {todos[userId].todos
+      {console.log(jobs)}
+        {jobs[userId].jobs
           .slice(0)
           .reverse()
-          .map(todo => (
-            <Todo key={todo.id} todo={todo} />
+          .map(job => (
+            <Job key={job.id} job={job} />
           ))}
       </Content>
     );
@@ -78,16 +82,19 @@ const Todos = ({ todos, requested, userId }) => {
     <Wrapper>
       <Container>
         <InnerWrapper>
-          <Heading noMargin size="h1" color="white">
-            Your Todos
+          <Heading noMargin size="h1" color='yellow'>
+            Your Open Jobs
           </Heading>
-          <Heading bold size="h4" color="white">
-            All you have to do for now...
+          <Heading bold size="h4" color="yellow" >
+            All you need to get done, for now...
+          </Heading>
+          <Heading noMargin bold size="h4" color="yellow">
+            Or Not
           </Heading>
           <Button color="main" contain onClick={() => setIsAdding(true)}>
-            Add Todo
+            Schedule Now
           </Button>
-          <InputTodo opened={isAdding} close={() => setIsAdding(false)} />
+          {/* <InputTodo opened={isAdding} close={() => setIsAdding(false)} /> */}
           {content}
         </InnerWrapper>
       </Container>
@@ -97,7 +104,7 @@ const Todos = ({ todos, requested, userId }) => {
 
 const mapStateToProps = ({ firebase, firestore }) => ({
   userId: firebase.auth.uid,
-  todos: firestore.data.todos,
+  jobs: firestore.data.jobs,
   requesting: firestore.status.requesting,
   requested: firestore.status.requested,
 });
@@ -109,5 +116,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect(props => [`todos/${props.userId}`])
-)(Todos);
+  firestoreConnect(props => [`jobs/${props.userId}`])
+)(MyJobs);

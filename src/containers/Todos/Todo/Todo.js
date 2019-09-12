@@ -47,6 +47,7 @@ const Todo = ({ todo }) => {
   return (
     <Wrapper>
       {todo.todo}
+      {console.log(todo)}
       <Controls>
         <i
           className="fas fa-edit"
