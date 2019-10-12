@@ -7,6 +7,7 @@ const initialState = {
     error: null,
     loading: false,
   },
+  
 };
 
 export default (state = initialState, { type, payload }) => {
@@ -32,9 +33,9 @@ export default (state = initialState, { type, payload }) => {
     case actions.DELETE_TODO_FAIL:
       return {
         ...state,
-        deleteTodo: { ...state.deleteTodo, loading: false, error: payload },
-      };
+        deleteTodo: { ...state.deleteTodo, loading: false, error: payload }};
 
+      
     default:
       return state;
   }

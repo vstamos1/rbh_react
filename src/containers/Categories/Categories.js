@@ -1,3 +1,5 @@
+
+
 import React from 'react';
 import Heading from '../../components/UI/Headings/Heading'
 import styled from 'styled-components';
@@ -70,7 +72,7 @@ const StyledHeading = styled(Heading)`
    text-align: center;
    font-size: .7rem
 `
-const AddJob = ({cats, requested}) => {
+const Categories = ({cats, requested}) => {
     let content;
   if (!cats) {
     content = (
@@ -114,6 +116,7 @@ const AddJob = ({cats, requested}) => {
 
 const mapStateToProps = ({ firestore }) => ({
     cats: firestore.data.categories,
+    jobs: firestore.data.jobs,
     requesting: firestore.status.requesting,
     requested: firestore.status.requested,
   });
@@ -126,7 +129,7 @@ const mapStateToProps = ({ firestore }) => ({
       mapDispatchToProps
     ),
     firestoreConnect(props => [`categories/cat`])
-  )(AddJob);
+  )(Categories);
 
 
 

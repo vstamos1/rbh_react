@@ -34,6 +34,7 @@ const TodoSchema = Yup.object().shape({
 });
 
 const InputTodo = ({
+
   editTodo,
   close,
   opened,
@@ -55,6 +56,10 @@ const InputTodo = ({
             ? 'Edit your todo and tap edit'
             : 'Type your todo and press add'}
         </Heading>
+
+        <Heading bold size="h4" color="white">
+        {editTodo ? editTodo.type : "error"}
+        </Heading>
         <Formik
           initialValues={{
             todo: editTodo ? editTodo.todo : '',
@@ -62,11 +67,13 @@ const InputTodo = ({
           validationSchema={TodoSchema}
           onSubmit={async (values, { setSubmitting, resetForm }) => {
             // send our todo
+            console.log("wtf")
             const res = editTodo
               ? await editTodoAction(editTodo.id, values)
               : await addTodo(values);
             if (res) {
-              close();
+              console.log("wtf2")
+              
             }
             setSubmitting(false);
             resetForm();
@@ -74,12 +81,16 @@ const InputTodo = ({
         >
           {({ isSubmitting, isValid, resetForm }) => (
             <StyledForm>
-              <Field
-                type="text"
+              <select
+                type="select"
                 name="todo"
                 placeholder="Write your todo..."
-                component={Input}
-              />
+                //component={Input}
+              >
+                <option>A</option>
+                <option>B</option>
+                <option>C</option>
+              </select>
               <ButtonsWrapper>
                 <Button
                   contain

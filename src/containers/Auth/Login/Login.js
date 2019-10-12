@@ -18,13 +18,18 @@ const MessageWrapper = styled.div`
   
 `;
 
+const StyledButton = styled(Button)`
+  color: var(--color-mainYellow)
+`
+
 const AuthWrapper = styled.div`
    width: 100%;
    padding: 3rem 1rem;
   align-self: flex-start;
   height: 100%;
   min-height: calc(100vh - 6rem);
-  background-color: var(--color-mainLighter);
+  background-color: var(--color-limeGreen);
+  
 `
 const LoginSchema = Yup.object().shape({
   email: Yup.string()
@@ -57,10 +62,10 @@ const Login = ({ login, loading, error, cleanUp }) => {
     >
       {({ isSubmitting, isValid }) => (
         <FormWrapper>
-          <Heading noMargin size="h1" color="white">
-            Login into your account
+          <Heading noMargin size="h1" color="yellow">
+            Login 
           </Heading>
-          <Heading bold size="h4" color="white">
+          <Heading bold size="h4" color="yellow">
             Fill in your details to login into your account
           </Heading>
           <StyledForm>
@@ -76,13 +81,13 @@ const Login = ({ login, loading, error, cleanUp }) => {
               placeholder="Your password..."
               component={Input}
             />
-            <Button
+            <StyledButton
               disabled={!isValid || isSubmitting}
               loading={loading ? 'Logging in...' : null}
               type="submit"
             >
               Login
-            </Button>
+            </StyledButton>
             <CustomLink link="/recover" color="white">
               Forgot your password?
             </CustomLink>

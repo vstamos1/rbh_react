@@ -9,21 +9,26 @@ import { Container } from '../../hoc/layout/elements';
 import InputTodo from './InputTodo/InputTodo';
 import Button from '../../components/UI/Forms/Button/Button';
 import Loader from '../../components/UI/Loader/Loader';
-import Todo from './Todo/Todo';
+import Job from '../../Jobs/Job/Job';
+import Todo from './Todo/Todo'
 
 const Wrapper = styled.div`
   width: 100%;
+  margin: 0;
   align-self: flex-start;
   height: 100%;
   min-height: calc(100vh - 6rem);
   background-color: var(--color-mainLighter);
 `;
+ const ContainerWrap = styled(Container)`
+  padding: 0;
 
+ `
 const InnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 5rem 4rem;
+  padding: 2rem 1rem;
 `;
 
 const Content = styled.div`
@@ -35,16 +40,16 @@ const Content = styled.div`
   margin-top: 2rem;
 `;
 
-const Todos = ({ todos, requested, userId }) => {
+const Todos = ({ jobs, requested, userId }) => {
   const [isAdding, setIsAdding] = useState(false);
   let content;
-  if (!todos) {
+  if (!jobs) {
     content = (
       <Content>
         <Loader isWhite />
       </Content>
     );
-  } else if (!todos[userId] || !todos[userId].todos) {
+  } else if (!jobs[userId] || !jobs[userId].jobs) {
     content = (
       <Content>
         <Heading color="white" size="h2">
@@ -52,7 +57,7 @@ const Todos = ({ todos, requested, userId }) => {
         </Heading>
       </Content>
     );
-  } else if (todos[userId].todos.length === 0) {
+  } else if (jobs[userId].jobs.length === 0) {
     content = (
       <Content>
         <Heading color="white" size="h2">
@@ -63,12 +68,12 @@ const Todos = ({ todos, requested, userId }) => {
   } else {
     content = (
       <Content>
-      {console.log(todos)}
-        {todos[userId].todos
+      {console.log(jobs)}
+        {jobs[userId].jobs
           .slice(0)
           .reverse()
-          .map(todo => (
-            <Todo key={todo.id} todo={todo} />
+          .map(job => (
+            <Todo key={job.id} todo={job} />
           ))}
       </Content>
     );
@@ -76,7 +81,7 @@ const Todos = ({ todos, requested, userId }) => {
 
   return (
     <Wrapper>
-      <Container>
+      <ContainerWrap>
         <InnerWrapper>
           <Heading noMargin size="h1" color="white">
             Your Todos
@@ -90,14 +95,14 @@ const Todos = ({ todos, requested, userId }) => {
           <InputTodo opened={isAdding} close={() => setIsAdding(false)} />
           {content}
         </InnerWrapper>
-      </Container>
+      </ContainerWrap>
     </Wrapper>
   );
 };
 
 const mapStateToProps = ({ firebase, firestore }) => ({
   userId: firebase.auth.uid,
-  todos: firestore.data.todos,
+  jobs: firestore.data.jobs,
   requesting: firestore.status.requesting,
   requested: firestore.status.requested,
 });
@@ -109,5 +114,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect(props => [`todos/${props.userId}`])
+  firestoreConnect(props => [`jobs/${props.userId}`])
 )(Todos);

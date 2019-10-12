@@ -12,7 +12,8 @@ import Button from '../../../components/UI/Forms/Button/Button';
 import Modal from '../../../components/UI/Modal/Modal';
 
 import * as actions from '../../../store/actions';
-import * as fb from 'firebase'
+import * as fb from 'firebase';
+
 let storageRef = fb.storage().ref();
 const MessageWrapper = styled.div`
   position: absolute;
@@ -21,6 +22,33 @@ const MessageWrapper = styled.div`
   padding: 0 3rem;
   
 `;
+
+const Image = styled.img`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  display: block;
+  position: relative;
+  margin: auto;
+
+  $ .profile-image{
+    max-width: 150px
+  }
+
+  @media only screen and (min-width: 37.5em){
+    transform: rotate(90deg);
+  }
+
+  @media ${props => props.theme.mediaQueries.small} {
+    transform: rotate(90deg);
+  }
+
+  `;
+
+const ImgWrap = styled(Image)`
+width: 150px;
+
+`
 const AccountWrapper = styled.div`
    width: 100%;
    padding: 3rem 1rem;
@@ -29,23 +57,7 @@ const AccountWrapper = styled.div`
   min-height: calc(100vh - 6rem);
   background-color: var(--color-mainLighter);
   `
-  const Image = styled.img`
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  display: block;
-  position: relative;
-  margin: auto;
-
-  @media only screen and (min-width: 37.5em){
-    transform: rotate(90deg);
-  }
-
-  @media ${props => props.theme.mediaQueries.small} {
-    
-  }
-
-  `
+  
 
   const EditImageBtn = styled.button`
     margin: 1rem;
@@ -162,6 +174,8 @@ function uploadTask(file) {
           
           imgUrl: downloadURL
       });
+        //TODO
+      // update image in jobs
     })
 
   })
@@ -208,7 +222,8 @@ function uploadTask(file) {
             <Heading bold size="h4" color="white">
               Here you can edit your profile
             </Heading>
-            <Image src={firebase.profile.imgUrl} alt="profile" className="profile-image" />
+            
+            <ImgWrap src={firebase.profile.imgUrl} alt="profile" className="profile-image" />
               <input
                 type="file"
                 id="imageInput"

@@ -11,11 +11,12 @@ import Uploader from './components/UI/Upload/Uploader';
 import VerifyEmail from './containers/Auth/VerifyEmail/VerifyEmail';
 import RecoverPassword from './containers/Auth/RecoverPassword/RecoverPassword';
 import Logout from './containers/Auth/Logout/Logout';
-import AddJob from './containers/AddJob/AddJob';
-import LawnMaint from './containers/AddJob/LawnMaint/LawnMaint'
+import AddJob from './Jobs/AddJob/AddJob';
+import LawnMaint from './Jobs/AddJob/LawnMaint/LawnMaint'
+import Categories from './containers/Categories/Categories';
 
 const Todos = React.lazy(() => import('./containers/Todos/Todos'));
-const MyJobs = React.lazy(() => import('./containers/MyJobs/MyJobs'));
+const MyJobs = React.lazy(() => import('./Jobs/MyJobs/MyJobs'));
 
 const App = ({ loggedIn, emailVerified }) => {
   let routes;
@@ -26,6 +27,7 @@ const App = ({ loggedIn, emailVerified }) => {
         <Route exact path="/verify-email" component={VerifyEmail} />
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/logout" component={Logout} />
+        <Route exact path="/categories" component={Categories} />
         <Redirect to="/verify-email" />
       </Switch>
     );
@@ -34,8 +36,11 @@ const App = ({ loggedIn, emailVerified }) => {
       <Suspense fallback={<div>Loading...</div>}>
         <Switch>
           <Route exact path="/" component={Home} />
-          <Route exact path="/todos" component={Todos} />
+          <Route exact path="/jobDetails/:id" component={Home} />
+          {/* <Route exact path="/todos" component={Todos} /> */}
           <Route exact path="/profile" component={Profile} />
+          <Route exact path="/categories" component={Categories} />
+
           <Route exact path="/userJobs" component={MyJobs} />
           <Route exact path="/lawn" component={LawnMaint} />
           <Route exact path="/addJob" component={AddJob} />

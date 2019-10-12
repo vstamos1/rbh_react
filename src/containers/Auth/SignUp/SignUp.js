@@ -16,14 +16,16 @@ const MessageWrapper = styled.div`
   position: absolute;
   bottom: -2rem;      
 `;
-
+const StyledButton = styled(Button)`
+      color: var(--color-mainYellow)
+`
 const AuthWrapper = styled.div`
    width: 100%;
    padding: 3rem 1rem;
   align-self: flex-start;
   height: 100%;
   min-height: calc(100vh - 6rem);
-  background-color: var(--color-mainLighter);
+  background-color: var(--color-limeGreen);
 `
 
 const SignUpSchema = Yup.object().shape({
@@ -71,10 +73,10 @@ const SignUp = ({ signUp, loading, error, cleanUp }) => {
     >
       {({ isSubmitting, isValid }) => (
         <FormWrapper>
-          <Heading noMargin size="h1" color="white">
-            Sign up for an account
+          <Heading noMargin size="h1" color="yellow">
+            Sign up
           </Heading>
-          <Heading bold size="h4" color="white">
+          <Heading bold size="h4" color="yellow">
             Fill in your details to register your new account
           </Heading>
           <StyledForm>
@@ -108,13 +110,13 @@ const SignUp = ({ signUp, loading, error, cleanUp }) => {
               placeholder="Re-type your password..."
               component={Input}
             />
-            <Button
+            <StyledButton
               disabled={!isValid || isSubmitting}
               loading={loading ? 'Signing up...' : null}
               type="submit"
             >
               Sign up
-            </Button>
+            </StyledButton>
             <MessageWrapper>
               <Message error show={error}>
                 {error}
