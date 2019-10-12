@@ -141,5 +141,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  firestoreConnect(['collections': 'jobs'])
+  firestoreConnect({'collections': 'jobs'})
 )(Jobslist);
